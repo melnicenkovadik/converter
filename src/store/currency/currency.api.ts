@@ -1,28 +1,44 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IUser, ServerResponse, IRepo } from '../../models/models';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {ActiveInput, Currency, IResponse} from '../../models/models';
 
-export const githubApi: any = createApi({
-  reducerPath: 'githubApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.github.com/',
-  }),
-  endpoints: (builder) => ({
-    searchUsers: builder.query<IUser[], string>({
-      query: (search: string) => ({
-        url: 'search/users',
-        params: {
-          q: search,
-          per_page: 10,
-        },
-      }),
-      transformResponse: (response: ServerResponse<IUser>) => response.items,
+interface IBodyRequest {
+       amount: number;
+       firstCurrency: Currency;
+       secondCurrency: Currency | Currency[];
+       activeInput: ActiveInput;
+}
+
+export const currencyApi = createApi({
+    reducerPath: 'currencyApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'https://currency-converter5.p.rapidapi.com/',
     }),
-    getUserRepos: builder.query<IRepo[], IRepo[]>({
-      query: (username) => ({
-        url: `users/${username}/repos`,
-      }),
+    endpoints: (builder) => ({
+        getConvertedValue: builder.query<IResponse,IBodyRequest >({
+            query: (params) => {
+                const {amount, firstCurrency, secondCurrency, activeInput} = params;
+                return ({
+                    url: 'currency/convert',
+                    method: 'GET',
+                    params: {
+                        "format": "json",
+                        "from": activeInput === ActiveInput.First
+                            ? firstCurrency
+                            : secondCurrency ,
+                        "to": activeInput === ActiveInput.First
+                            ? secondCurrency
+                            : firstCurrency,
+                        "amount": amount,
+                        language: 'ru'
+                    },
+                    headers: {
+                        'X-RapidAPI-Key': process.env.REACT_APP_API_KEY,
+                        'X-RapidAPI-Host': 'currency-converter5.p.rapidapi.com'
+                    }
+                })
+            },
+        }),
     }),
-  }),
 });
 
-export const { useSearchUsersQuery, useLazyGetUserReposQuery } = githubApi;
+export const {useLazyGetConvertedValueQuery} = currencyApi;

@@ -1,13 +1,83 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.app-header {
+    background-color: #222;
+    height: 60px;
+    align-items: center;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px;
+}
+
+.converter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.converter input {
+    width: 200px;
+    height: 30px;
+    margin: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.converter button {
+    width: 200px;
+    height: 30px;
+    margin: 10px;
+    background: #222222;
+    color: white;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+.converter select {
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+    backdrop-filter: blur();
+}
+
+.converter__swap{
+    margin: 10px;
+    color: black;
+    border: 1px solid white;
+    border-radius: 20px;
+    cursor: pointer;
+    animation:  infinite 10s rotateRound
+}
+
+@keyframes rotateRound {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
